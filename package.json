@@ -1,0 +1,24 @@
+{
+  "name": "paulr_bamazon",
+  "version": "1.0.0",
+  "description": "Command line app that manipulates SQL database",
+  "main": "bamazonCustomer.js",
+  "dependencies": {
+    "inquirer": "^3.2.0",
+    "mysql": "^2.13.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heythisispaul/Bamazon.git"
+  },
+  "author": "Paul Richard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/heythisispaul/Bamazon/issues"
+  },
+  "homepage": "https://github.com/heythisispaul/Bamazon#readme"
+}
