@@ -17,12 +17,34 @@ connection.connect(function(err) {
 const storeDisplay = () => {
 	connection.query("SELECT * FROM products", function(err, response) {
 		if (err) throw err;
-		console.log(`Welcome to Bamazon! What would you like to buy?\n`);
-		for (x in response) {
-			console.log(
-				`${response[x].product_name}
-				Price: ${response[x].price}
-				Product ID: ${response[x].item_id}`);
-		}
-	})
-}
+		inquirer
+			.prompt([
+				{
+					name: "choice",
+					choices: function(answer) {
+						for (i in response) {
+							console.log(
+								`${response[i].product_name}
+								Price: ${response[i].price}
+								Product ID: ${response[i].item_id}`);
+						}
+					},
+					message: "what would you like to buy? Enter the Product ID to select."
+				},
+				{
+					name: "quantity",
+					type: "input",
+					message: "How many would you like to buy?"
+				}
+			])
+			.then(function(answer){
+				var chosenItem;
+				for (i in response) {
+					if (response[i].item_id === parseInt(answer.choice)) {
+						chosenItem = response[i];
+						console.log(chosenItem);
+					}
+				}
+			})
+		});
+	}
