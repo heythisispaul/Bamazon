@@ -5,7 +5,7 @@ const connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
 	user: "root",
-	password: "10053VUa!",
+	password: "100VUa!",
 	database: "bamazon_db"
 });
 
@@ -25,7 +25,7 @@ const storeDisplay = () => {
 						for (i in response) {
 							console.log(
 								`${response[i].product_name}
-								Price: ${response[i].price}
+								Price: $${response[i].price}
 								Product ID: ${response[i].item_id}`);
 						}
 					},
@@ -42,8 +42,31 @@ const storeDisplay = () => {
 				for (i in response) {
 					if (response[i].item_id === parseInt(answer.choice)) {
 						chosenItem = response[i];
-						console.log(chosenItem);
 					}
+				}
+				if (chosenItem.stock_quantity < answer.quantity) {
+					console.log("Sorry, not enough in stock, try ordering fewer!");
+					storeDisplay();
+				} else if (chosenItem.stock_quantity > answer.quantity) {
+					var newStock = chosenItem.stock_quantity - answer.quantity;
+					connection.query("UPDATE products SET ? WHERE ?",
+					[
+						{
+							stock_quantity: newStock
+						},
+						{
+							item_id: chosenItem.item_id
+						}
+					],
+					function(err) {
+						if (err) throw err;
+						let totalPrice = chosenItem.price * answer.quantity;
+						console.log(`success! You bought ${answer.quantity} ${chosenItem.product_name}(s) for $${totalPrice}. Thank you for shopping at Bamazon!`);
+						storeDisplay();
+					})
+				} else {
+					console.log("Sorry, something went wrong. Please try again.");
+					storeDisplay();
 				}
 			})
 		});
